@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F6B6E">
+<meta name="robots" content="noindex">
+<title>PainMap prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Source+Serif+4:ital,wght@0,500;0,700;1,500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0F6B6E}a:hover{color:#0B5557}
+button{font-family:inherit}
+.pm-root :focus-visible{outline:3px solid #0F6B6E;outline-offset:2px}
+.pm-root button,.pm-root a{-webkit-tap-highlight-color:transparent;transition:transform .08s ease,filter .12s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease}
+.pm-root button:active:not(:disabled),.pm-root a:active{transform:scale(.96);filter:brightness(.86)}
+.pm-root button[aria-pressed="true"],.pm-root button[aria-checked="true"]{box-shadow:0 0 0 2px rgba(15,107,110,.28)}
+@media (prefers-reduced-motion:reduce){.pm-root button:active:not(:disabled),.pm-root a:active{transform:none}}
+.pm-root,.pm-root.pm-light{--bg:#F7F2EA;--card:#FFFFFF;--soft:#F1EBE1;--soft2:#FBF8F3;--chip:#ECE4D8;--tealsoft:#E3F1F0;--tealsoft2:#DDEFEE;--tealtext:#0B5557;--stage:#F5EFE3;--stageline:#D8CBB4;--stageink:#2A2118;--stagemute:#4A3B30;--stagemute2:#6B5D4C;--ink:#1F2A30;--ink2:#3E4A52;--muted:#55626B;--muted2:#46525A;--line:#D6CBBB;--line2:#E6DCCD;--disabled:#DDD3C4;--warnbg:#FFF1E6;--warnline:#F2C29B;--warntext:#5A2A08;--dangerbg:#FDE7E2;--dangerline:#F2B0A2;--dangertext:#7A1E10;--okbg:#DDF3E4;--oktext:#14532D;--goldtext:#7A5C12;--chipon:#1F2A30;--chipontext:#FFFFFF;--labelbg:rgba(245,239,227,0.92);--leader:rgba(42,33,24,0.5);color-scheme:light}
+.pm-root.pm-dark{--bg:#141A1C;--card:#1E2629;--soft:#262F33;--soft2:#222A2D;--chip:#2C3539;--tealsoft:#173A3B;--tealsoft2:#1B4244;--tealtext:#7FD1CF;--stage:#231F1B;--stageline:#3B342C;--stageink:#F1E7D6;--stagemute:#D6C8B2;--stagemute2:#A99A83;--ink:#ECE6DC;--ink2:#CBC4B8;--muted:#A9B1B5;--muted2:#B8BFC2;--line:#3A4448;--line2:#2C3539;--disabled:#2F383C;--warnbg:#3A2A1C;--warnline:#6E4A2A;--warntext:#F4C9A0;--dangerbg:#4A1F1A;--dangerline:#7A3328;--dangertext:#FFB4A6;--okbg:#173524;--oktext:#9FE0B5;--goldtext:#E8C672;--chipon:#ECE6DC;--chipontext:#141A1C;--labelbg:rgba(35,31,27,0.92);--leader:rgba(241,231,214,0.5);color-scheme:dark}
+@media (prefers-color-scheme: dark){.pm-root.pm-auto{--bg:#141A1C;--card:#1E2629;--soft:#262F33;--soft2:#222A2D;--chip:#2C3539;--tealsoft:#173A3B;--tealsoft2:#1B4244;--tealtext:#7FD1CF;--stage:#231F1B;--stageline:#3B342C;--stageink:#F1E7D6;--stagemute:#D6C8B2;--stagemute2:#A99A83;--ink:#ECE6DC;--ink2:#CBC4B8;--muted:#A9B1B5;--muted2:#B8BFC2;--line:#3A4448;--line2:#2C3539;--disabled:#2F383C;--warnbg:#3A2A1C;--warnline:#6E4A2A;--warntext:#F4C9A0;--dangerbg:#4A1F1A;--dangerline:#7A3328;--dangertext:#FFB4A6;--okbg:#173524;--oktext:#9FE0B5;--goldtext:#E8C672;--chipon:#ECE6DC;--chipontext:#141A1C;--labelbg:rgba(35,31,27,0.92);--leader:rgba(241,231,214,0.5);color-scheme:dark}}
+.pm-root input,.pm-root select,.pm-root textarea{background:var(--card);color:var(--ink);border-color:var(--line)}
+@media (prefers-reduced-motion: reduce){[class^="pm-"] *{animation:none!important}}
+</style>
+<style>html,body{margin:0;background:#E9E1D3}#app{min-height:100dvh}</style>
+</head>
+<body>
+<div id="app"></div>
+<noscript>PainMap needs JavaScript turned on.</noscript>
+<script src="runtime.js"></script>
+<script src="pm3d-viewer.js"></script>
+<script src="app.js"></script>
+<script>window.PM_START(window.PM_MAKE, window.PM_DEFAULTS);</script>
+</body>
+</html>
