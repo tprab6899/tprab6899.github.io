@@ -2070,7 +2070,7 @@ function buildDemo(kind, animate) {
 }
 // ---------- Waitlist: sign-ups go to the PainMap Google Sheet through a small Google Apps Script web app.
 // Empty = not connected yet, and the waitlist buttons stay hidden.
-const WAITLIST_URL = '';
+const WAITLIST_URL = 'https://script.google.com/macros/s/AKfycbx3eouyYEsjFmgKkhhinvxkaLAZNsD0oXCISPfnHpPJrySDt-ftNP7PPOeovd9hbDeh/exec';
 const WL_PROVS = [['AB', 'Alberta', 'Alberta'], ['BC', 'British Columbia', 'Colombie-Britannique'], ['MB', 'Manitoba', 'Manitoba'], ['NB', 'New Brunswick', 'Nouveau-Brunswick'], ['NL', 'Newfoundland and Labrador', 'Terre-Neuve-et-Labrador'], ['NS', 'Nova Scotia', 'Nouvelle-Écosse'], ['NT', 'Northwest Territories', 'Territoires du Nord-Ouest'], ['NU', 'Nunavut', 'Nunavut'], ['ON', 'Ontario', 'Ontario'], ['PE', 'Prince Edward Island', 'Île-du-Prince-Édouard'], ['QC', 'Quebec', 'Québec'], ['SK', 'Saskatchewan', 'Saskatchewan'], ['YT', 'Yukon', 'Yukon'], ['Outside Canada', 'Outside Canada', 'Hors du Canada']];
 const WL_EMPTY = { name: '', email: '', province: '', pain: '', test: false, consent: false, status: '' };
 const demoKind = (name) => DEMO_FOR[name] || 'none';
