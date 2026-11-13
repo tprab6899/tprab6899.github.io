@@ -3206,6 +3206,11 @@ class Component extends DCLogic {
         const key = (e) => [e.iso || e.date, e.time || '', e.spot || '', e.what || ''].join('|');
         const merge = (cur, add) => { const have = {}; (cur || []).forEach((e) => { have[key(e)] = 1; }); return (cur || []).concat((add || []).filter((e) => !have[key(e)])); };
         const base = Object.assign({}, this.state, patch);
+        if (Array.isArray(json.removeSpots) && json.removeSpots.length) {
+          const drop = (list) => (list || []).filter((e) => json.removeSpots.indexOf(e.spot) < 0);
+          base.diary = patch.diary = drop(base.diary);
+          base.treatments = patch.treatments = drop(base.treatments);
+        }
         const byDay = (a, b) => ((a.iso || '') + (a.time || '')).localeCompare((b.iso || '') + (b.time || ''));
         if (json.diary) patch.diary = merge(base.diary, json.diary).slice().sort(byDay);
         if (json.treatments) patch.treatments = merge(base.treatments, json.treatments).slice().sort(byDay);
