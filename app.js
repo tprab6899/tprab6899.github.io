@@ -3116,6 +3116,7 @@ const PLAN_TYPE_MUSCLES = { spine: ['back_muscles', 'abdominal_muscles', 'glutea
 const planMuscles = (spot, type) => { const m = PLAN_MUSCLES.find((q) => q[0].test(spot || '')); return m ? m[1] : PLAN_TYPE_MUSCLES[type] || PLAN_TYPE_MUSCLES.general; };
 const LEGAL_ORDER = ['privacy', 'terms', 'refunds', 'cookies', 'choices', 'email', 'deletion', 'services', 'business', 'licences'];
 
+const PERSIST_KEYS = ["lang", "age", "sex", "profileSet", "introDone", "introAgree", "consentAsked", "termsOk", "analyticsOk", "marketingOk", "consentLog", "diary", "treatments", "txHidden", "txEdits", "diaryHidden", "diaryEdits", "hideSamples", "savedSpots", "plan", "planDone", "planSwap", "planChecks", "medReminders", "medNone", "reminderOn", "reminderTime", "reportNotes", "rpShowCauses", "guardianOk", "tutorialDone", "b3TourDone", "diarySpot"];
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -3187,8 +3188,47 @@ class Component extends DCLogic {
     const glow = s.b3Focus ? s.b3Focus.keys : s.b3Pin && s.b3Pin.kind !== 'skin' && s.b3Pin.key ? [s.b3Pin.key] : [];
     if (s.b3Ready) v.highlight(glow);
   }
-  componentDidMount() { this.onTouch = () => {}; document.addEventListener('touchstart', this.onTouch, { passive: true }); }
-  componentDidUpdate() { this.sync3D(); }
+  componentDidMount() {
+    this.onTouch = () => {}; document.addEventListener('touchstart', this.onTouch, { passive: true });
+    // Saved data lives only on this phone. Any failure (private mode, storage blocked) just means nothing is kept.
+    let saved = null;
+    try { saved = JSON.parse(window.localStorage.getItem('painmap.saved.v1') || 'null'); } catch (e) { saved = null; }
+    const patch = {};
+    if (saved && typeof saved === 'object') {
+      PERSIST_KEYS.forEach((k) => { if (saved[k] !== undefined) patch[k] = saved[k]; });
+      if (patch.introDone) patch.screen = 'find';
+    }
+    // One-time import link: ?import=<base64url JSON> adds entries the person was sent (nothing leaves the phone).
+    try {
+      const q = new URLSearchParams(window.location.search).get('import');
+      if (q) {
+        const json = JSON.parse(decodeURIComponent(escape(atob(q.replace(/-/g, '+').replace(/_/g, '/')))));
+        const key = (e) => [e.iso || e.date, e.time || '', e.spot || '', e.what || ''].join('|');
+        const merge = (cur, add) => { const have = {}; (cur || []).forEach((e) => { have[key(e)] = 1; }); return (cur || []).concat((add || []).filter((e) => !have[key(e)])); };
+        const base = Object.assign({}, this.state, patch);
+        const byDay = (a, b) => ((a.iso || '') + (a.time || '')).localeCompare((b.iso || '') + (b.time || ''));
+        if (json.diary) patch.diary = merge(base.diary, json.diary).slice().sort(byDay);
+        if (json.treatments) patch.treatments = merge(base.treatments, json.treatments).slice().sort(byDay);
+        if (json.reportNotes && !base.reportNotes) patch.reportNotes = json.reportNotes;
+        if (json.age) patch.age = json.age;
+        if (json.sex) patch.sex = json.sex;
+        if (json.hideSamples != null) patch.hideSamples = json.hideSamples;
+        if (json.diary && json.diary.length) patch.diarySpot = json.diary[json.diary.length - 1].spot;
+        window.history.replaceState(null, '', window.location.pathname);
+        this.importNote = ((json.diary || []).length + (json.treatments || []).length) + ' entries added to your diary';
+      }
+    } catch (e) { this.importNote = null; }
+    if (Object.keys(patch).length) this.setState(patch);
+    if (this.importNote) this.flash(this.importNote);
+  }
+  componentDidUpdate() {
+    this.sync3D();
+    try {
+      const out = {}; PERSIST_KEYS.forEach((k) => { out[k] = this.state[k]; });
+      const txt = JSON.stringify(out);
+      if (txt !== this.lastSaved) { window.localStorage.setItem('painmap.saved.v1', txt); this.lastSaved = txt; }
+    } catch (e) {}
+  }
   componentWillUnmount() {
     if (this.v3d) { this.v3d.dispose(); this.v3d = null; }
     clearInterval(this.exInt); clearTimeout(this.toastTimer);
