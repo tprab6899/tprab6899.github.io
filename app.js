@@ -4045,7 +4045,7 @@ class Component extends DCLogic {
     const isRest = (x) => x === 'None' || x === 'Resting or sleeping';
     const lastWeek = recentDays.filter((d) => isoT(lastE) - Date.parse(d + 'T12:00:00') < 7 * dayMs);
     const restWeek = lastWeek.length >= 5 ? lastWeek.filter((d) => isRest(dayAct[d])).length : null;
-    const actCount = {}; recentDays.forEach((d) => { const x = dayAct[d]; if (!isRest(x)) actCount[x] = (actCount[x] || 0) + 1; });
+    const actCount = {}; recentDays.forEach((d) => { const x = dayAct[d]; if (!isRest(x)) String(x).split(' + ').forEach((part) => { part = part.trim(); if (part) actCount[part] = (actCount[part] || 0) + 1; }); });
     const acts = Object.keys(actCount).sort((x, y) => actCount[y] - actCount[x]);
     const firstP = focus.length ? focus[0].pain : null;
     const steady = focus.length >= 2 && focus.every((e) => e.pain === firstP);
