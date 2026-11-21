@@ -4147,7 +4147,11 @@ class Component extends DCLogic {
     const durTxt = howId && pick(DURATION, howId) ? T(pick(DURATION, howId)) : (firstE ? T('Since') + ' ' + firstE.date : '—');
     const pdfD = {
       lang: s.lang,
-      title: s.lang === 'fr' ? T('Pain') + ' : ' + lc1(whereTxt) : whereTxt + ' ' + T('pain').toLowerCase(),
+      // Left and right of the same foot spot read as one place: "Both feet, under the arch".
+      title: (() => { const base = both.length === 2 && both[0].replace(/^Left /, '') === both[1].replace(/^Right /, '') ? both[0].replace(/^Left /, '').toLowerCase() : '';
+        const FOOT = { arch: ['under the arch', 'sous la voûte'], heel: ['at the heel', 'au talon'] };
+        if (FOOT[base]) return (s.lang === 'fr' ? 'Les deux pieds, ' + FOOT[base][1] : 'Both feet, ' + FOOT[base][0]);
+        return s.lang === 'fr' ? T('Pain') + ' : ' + lc1(whereTxt) : whereTxt + ' ' + T('pain').toLowerCase(); })(),
       subline: T('Prepared') + ' ' + new Date().toLocaleDateString(pdfLoc, { year: 'numeric', month: 'long', day: 'numeric' }) + ' · ' + T('From my own PainMap entries') + ' · ' + T('Visual summary on page 2 · Daily log on page 3') + ' · ' + T('Load and symptoms on page 4'),
       age: s.age ? String(s.age) : '—', areaShort: whereTxt || '—', duration: durTxt,
       stats: pdfStats, lines: qgLines,
