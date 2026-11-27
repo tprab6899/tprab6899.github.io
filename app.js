@@ -1714,8 +1714,8 @@ const PILOT_PHASE = 'clinicians';
 const PILOT_FREE = true;
 // Minimum age during the pilot.
 const ADULT_AGE = 18;
-const PRIVACY_URL = 'https://tprab6899.github.io/privacy.html';
-const TERMS_URL = 'https://tprab6899.github.io/terms.html';
+const PRIVACY_URL = new URL('privacy.html', location.href).href;
+const TERMS_URL = new URL('terms.html', location.href).href;
 // Which number each warning sign sends people to. DRAFT: a clinician must review this list and these choices before the pilot.
 const RF_URGENCY = { bladder: '911', chest: '911', numb: '911', fever: '811', fall: '811', weight: '811', constant: '811' };
 const WAITLIST_URL = 'https://script.google.com/macros/s/AKfycbx3eouyYEsjFmgKkhhinvxkaLAZNsD0oXCISPfnHpPJrySDt-ftNP7PPOeovd9hbDeh/exec';
